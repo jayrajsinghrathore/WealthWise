@@ -1,17 +1,19 @@
 
-// app/api/push-schema/route.ts
-
 import { NextResponse } from 'next/server';
-import {prisma} from '@/lib/prisma'; // adjust path if needed
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 export async function GET() {
   try {
-    // Just checking DB connection
-    await prisma.$executeRawUnsafe('SELECT 1');
+    const { stdout } = await execAsync('pnpm prisma db push');
+    console.log('Database connected:', stdout);
     return NextResponse.json({ message: 'Database connected successfully' });
   } catch (error) {
-    console.error('Database connection error:', error);
-    return NextResponse.json({ message: 'Failed to connect to database' }, { status: 500 });
+    console.error('Error pushing database:', error);
+    return NextResponse.json({ message: 'Database connection failed' }, { status: 500 });
   }
 }
+
 

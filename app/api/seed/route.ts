@@ -1,21 +1,16 @@
-// app/api/seed/route.ts
-
 import { NextResponse } from 'next/server';
-import {prisma} from '@/lib/prisma'; // adjust if your path differs
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 export async function GET() {
   try {
-    // Example seeding: Add a dummy user
-    await prisma.user.create({
-      data: {
-        name: 'Demo User',
-        email: 'demo@example.com',
-      },
-    });
-
+    const { stdout } = await execAsync('pnpm prisma db seed');
+    console.log('Database seeded:', stdout);
     return NextResponse.json({ message: 'Seeded successfully' });
   } catch (error) {
-    console.error('Seeding error:', error);
-    return NextResponse.json({ message: 'Failed to seed database' }, { status: 500 });
+    console.error('Error seeding database:', error);
+    return NextResponse.json({ message: 'Seeding failed' }, { status: 500 });
   }
 }
