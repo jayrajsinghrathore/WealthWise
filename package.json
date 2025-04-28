@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "pnpm run prisma generate && next build",
+    "dev": "next dev",
+    "prisma": "prisma",
     "start": "next start",
     "lint": "next lint"
   },
