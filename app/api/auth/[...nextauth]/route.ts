@@ -58,29 +58,9 @@ export const authOptions: NextAuthOptions = {
     error: "/login", // Error code passed in query string as ?error=
     newUser: "/signup", // New users will be directed here on first sign in
   },
-  callbacks: {
-    async jwt({ token, user, account }) {
-      // Add access_token to the token right after sign in
-      if (account && user) {
-        return {
-          ...token,
-          accessToken: account.access_token,
-          userId: user.id,
-        }
-      }
-      return token
-    },
-    async session({ session, token }) {
-      // Add properties to session, like an access_token and userId
-      if (session.user) {
-        session.user.id = token.userId as string
-        session.accessToken = token.accessToken as string
-      }
-      return session
-    },
-  },
+  
   session: {
-    strategy: "jwt",
+    strategy: "database",
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
