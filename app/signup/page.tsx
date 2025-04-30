@@ -55,41 +55,23 @@ export default function SignupPage() {
 
     setIsLoading(true)
 
-    setIsLoading(true)
-
     try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      })
-  
-      const data = await res.json()
-  
-      if (!res.ok) {
-        setError(data.error || "Something went wrong")
-        return
-      }
-  
-      // After successful signup, auto sign in
-      const login = await signIn("credentials", {
+      // In a real app, you would register the user in your database here
+      // For now, we'll just sign them in with credentials
+      const result = await signIn("credentials", {
         redirect: false,
         email: formData.email,
         password: formData.password,
       })
-  
-      if (login?.error) {
-        setError(login.error)
+
+      if (result?.error) {
+        setError(result.error)
         return
       }
-  
+
       router.push("/dashboard")
     } catch (err) {
-      setError("An error occurred during signup")
+      setError(err instanceof Error ? err.message : "An error occurred during signup")
     } finally {
       setIsLoading(false)
     }
