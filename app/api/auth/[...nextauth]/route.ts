@@ -129,6 +129,43 @@ export const authOptions: NextAuthOptions = {
     newUser: "/signup", // New users will be directed here on first sign in
   },
   callbacks: {
+     
+    async signIn({ user, account, profile }) {
+      // Only process if it's an OAuth account and account is not null
+      if (account && account.provider !== "credentials") {
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email || undefined },
+        })
+    
+        if (existingUser) {
+          await prisma.account.upsert({
+            where: {
+              provider_providerAccountId: {
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+              },
+            },
+            update: {},
+            create: {
+              userId: existingUser.id,
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+              type: account.type,
+              access_token: account.access_token,
+              token_type: account.token_type,
+              scope: account.scope,
+              id_token: account.id_token,
+              expires_at: account.expires_at,
+              refresh_token: account.refresh_token,
+            },
+          })
+        }
+      }
+    
+      return true
+    },
+    
+
     async jwt({ token, user, account }) {
       // Add access_token to the token right after sign-in
       if (account && user) {
