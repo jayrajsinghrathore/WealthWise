@@ -17,10 +17,10 @@
 
 ## 🛠️ Tech Stack
 
-- **Next.js 14** – App Router and server components  
+- **Next.js 15** – App Router and server components  
 - **TypeScript** – Static typing for better dev experience  
 - **Tailwind CSS** – Custom UI with utility-first styling  
-- **Prisma + PostgreSQL** – ORM + relational DB  
+- **Prisma + PostgreSQL** – ORM + relational DB NeonDB
 - **NextAuth.js** – Authentication (Google, GitHub, Credentials)  
 - **Framer Motion** – Seamless and fluid animations  
 
