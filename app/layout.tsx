@@ -14,7 +14,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "WealthWise - Smart Personal Finance Tracker",
   description: "Track your spending, visualize your habits, and achieve your financial goals",
-    generator: 'v0.dev'
+    generator: 'next'
 }
 
 export default function RootLayout({
